@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+	TODO: Task 1, Task 2, Task 3
+-->
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			.error {
+				font-family:monospace;
+				color: red;
+				font-weight: bold;
+			}
+		</style>
+		<title>Login</title>
+	</head>
+	<body>
+
+		<h2>Please Login</h2>
+
+		<form method="POST" data-th-action="@{/login}" data-th-object="${login}">
+		<table>
+			<tr>
+				<td> 
+					<label for="username">Username:</label> 
+				</td>
+				<td>
+					<input type="text" id="username" size="30" 
+							placeholder="Please type in your username" data-th-field="*{username}">
+					<div class="error" data-th-if="${#fields.hasErrors('username')}">
+						<span data-th-errors="*{username}"></span>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="password">Password:</label>
+				</td>
+				<td>
+					<input type="password" id="password" size="30" 
+							placeholder="Please type in your password" data-th-field="*{password}">
+					<div class="error" data-th-if="${#fields.hasErrors('password')}">
+						<span data-th-errors="*{password}"></span>
+					</div>
+				</td>
+			</tr>
+			<tr data-th-if="${count>0}">
+				<td>What is</td>
+				<td data-th-text="*{getFirstNum} + *{getOperator} + *{getSecondNum} + '?'"></td>
+			</tr>
+			<tr data-th-if="${count>0}">
+				<td>
+					<label for="answer">Answer:</label>
+				</td>
+				<td>
+					<input type="answer" id="answer" size="30" 
+							placeholder="Please type in your answer" data-th-field="*{answer}">
+				</td>
+				<td data-th-if="*{answer != getAnswer()}?'Wrong answer':'Correct answer'"></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>
+					<button type="submit">Login</button>
+				</td>
+			</tr>
+		</table>
+		</form>
+
+		<div data-th-unless="${null == error}">
+			<div>Error</div>
+			<code data-th-text="${error}"></code>
+		</div>
+		
+	</body>
+</html>

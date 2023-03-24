@@ -1,17 +1,53 @@
 package ibf2022.batch2.ssf.frontcontroller.services;
 
+import java.io.StringReader;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import ibf2022.batch2.ssf.frontcontroller.models.Login;
+import ibf2022.batch2.ssf.frontcontroller.respositories.AuthenticationRepository;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+
+@Service
 public class AuthenticationService {
+
+	@Autowired
+	private AuthenticationRepository authRepo;
+
+	private String authenticateUrl = "https://auth.chuklee.com/api/authenticate";
 
 	// TODO: Task 2
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write the authentication method in here
-	public void authenticate(String username, String password) throws Exception {
+	public String authenticate(String username, String password) throws Exception {
+
+		JsonObject o = Json.createObjectBuilder()
+								.add("username", username)
+								.add("password", password)
+								.build();
+		RequestEntity req = RequestEntity
+							.post(authenticateUrl)
+							.accept(MediaType.APPLICATION_JSON)
+							.header("Content-Type", "application/json")
+							.body(o.toString());
+
+		RestTemplate template = new RestTemplate();
+		ResponseEntity<String> resp = template.exchange(req, String.class);
+		
+		return resp.getBody();
 	}
 
 	// TODO: Task 3
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write an implementation to disable a user account for 30 mins
 	public void disableUser(String username) {
+		authRepo.disableUser(username);
 	}
 
 	// TODO: Task 5
@@ -20,4 +56,5 @@ public class AuthenticationService {
 	public boolean isLocked(String username) {
 		return false;
 	}
+
 }
