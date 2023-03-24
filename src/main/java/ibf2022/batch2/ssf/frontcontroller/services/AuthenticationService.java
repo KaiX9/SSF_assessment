@@ -25,9 +25,9 @@ public class AuthenticationService {
 	public boolean authenticate(String username, String password) throws Exception {
 
 		JsonObject o = Json.createObjectBuilder()
-								.add("username", username)
-								.add("password", password)
-								.build();
+							.add("username", username)
+							.add("password", password)
+							.build();
 		RequestEntity req = RequestEntity
 							.post(authenticateUrl)
 							.accept(MediaType.APPLICATION_JSON)
