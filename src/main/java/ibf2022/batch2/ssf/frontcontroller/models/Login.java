@@ -25,6 +25,9 @@ public class Login {
         this.username = username;
     }
 
+    public Login() {
+    }
+
     public int getFirstNum() {
         return firstNum;
     }

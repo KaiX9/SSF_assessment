@@ -1,7 +1,5 @@
 package ibf2022.batch2.ssf.frontcontroller.services;
 
-import java.io.StringReader;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
@@ -9,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import ibf2022.batch2.ssf.frontcontroller.models.Login;
 import ibf2022.batch2.ssf.frontcontroller.respositories.AuthenticationRepository;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
@@ -25,7 +22,7 @@ public class AuthenticationService {
 	// TODO: Task 2
 	// DO NOT CHANGE THE METHOD'S SIGNATURE
 	// Write the authentication method in here
-	public String authenticate(String username, String password) throws Exception {
+	public boolean authenticate(String username, String password) throws Exception {
 
 		JsonObject o = Json.createObjectBuilder()
 								.add("username", username)
@@ -40,7 +37,10 @@ public class AuthenticationService {
 		RestTemplate template = new RestTemplate();
 		ResponseEntity<String> resp = template.exchange(req, String.class);
 		
-		return resp.getBody();
+		if (!resp.getBody().contains("Authenticated")) {
+			return false;
+		}
+		return true;
 	}
 
 	// TODO: Task 3

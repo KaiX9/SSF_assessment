@@ -96,10 +96,19 @@ public class FrontController {
 
 	}
 
+	@PostMapping(path="/logout")
+	public String logoutUser(Model m, HttpSession s
+		, @ModelAttribute Login login) {
+		login = getLogin(s);
+		s.invalidate();
+
+		return "view0";
+		}
+
 	private Login getLogin(HttpSession s) {
 		Login login = (Login)s.getAttribute("login");
 		if (null == login) {
-			login = new Login(login.getUsername());
+			login = new Login();
 			s.setAttribute("login", login);
 		}
 		return login;
